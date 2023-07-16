@@ -1,36 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Index Page</title>
+	<title>delete by name</title>
 </head>
 <body>
-	<h3>Profiles</h3>
-	<a href="/add_data">ADD</a>
-	<br>
-	<table>
-		<thead>
-            <th>Name</th>
-            <th>Roll No</th>
-            <th>Class</th>
-            <th>Section</th>
-            <th>Teacher</th>
-            <th>GPA</th>
-            <th>Fee</th>
-		</thead>
-		{% for st in profiles %}
-		<tbody>
-			<tr>
-                <td>{{ st.name }}</th>
-                <td>{{ st.Rollno }}</td>
-                <td>{{ st.class }}</td>
-                <td>{{ st.section }}</td>
-                <td>{{ st.classteacher }}</td>
-                <td>{{ st.GPA }}</td>
-                <td>{{ st.Fee_status }}</td>
-            </tr>
-			<td><a href="/delete/{{data.id}}" type="button">Delete</a></td>
-		</tbody>
-		{% endfor%}
-	</table>
+	<h3>delete by name</h3>
+	<a href="/">back</a>
+	<form action="/filterclassteacher" method="POST"> 
+		<label>Name</label>
+		<input type="text" name="name" placeholder="tech name...">
+		
+	</form>
 </body>
 </html>

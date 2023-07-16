@@ -1,27 +1,25 @@
 # Importing module
-import mysql.connector
+import pymysql
 
-# Creating connection object
-mydb = mysql.connector.connect(
-	host = "localhost",
-	user = "root",
-	password = "Sidarth@63",
-    database = 'studentdb'
-)
+def connection():
+    s = 'localhost' 
+    d = 'studentdb' 
+    u = 'root' #Your login user
+    p = 'Sidarth@63' #Your login password
+    conn = pymysql.connect(host=s, user=u, password=p, database=d)
+    return conn
 
-cursor = mydb.cursor()
+
+stu = []
+conn = connection()
+cursor = conn.cursor()
  
-# Creating a table called 'gfg' in the
-# 'geeksforgeeks' database
-#cursor.execute("CREATE TABLE stud (name VARCHAR(25) NOT NULL,  rollno VARCHAR(25) NOT NULL, CLASS VARCHAR(4) NOT NULL, SECTION CHAR(1) NOT NULL,CLASS_TEACH VARCHAR(25) NOT NULL,GPA FLOAT(3) CHECK (GPA<=5) NOT NULL,FEE CHAR(10) NOT NULL)")
-
-cursor.execute('INSERT INTO stud (name, rollno, CLASS, SECTION, CLASS_TEACH, GPA, FEE) VALUES ("SANDY", "cb.en.u4cce21062", "CCE", "A", "Karthik", 4, "NOTPAID"),("JOHN","cb.en.u4cce21063","CSE","B","Ravi",3,"PAID"),("MARY","cb.en.u4cce21064","ECE","C","Suresh",2,"NOTPAID"),("ALEX","cb.en.u4cce21065","IT","D","Shankar",1,"PAID")')
-
 
 def print_table():
-    row=cursor.fetchall()
-    for row in row:
-        print(row)
+    cursor.execute("SELECT * FROM stud")
+    for row in cursor:
+        stu.append({"name": row[0], "Rollno": row[1], "class": row[2], "section": row[3], "classteacher": row[4], "GPA": row[5], "Fee_status": row[6]})
+    print(stu)
 
 
 def sort_by_name():
@@ -65,4 +63,10 @@ def filter_by_not_paid():
     cursor.execute("select * from stud where fee LIKE '%NOTPAID%'")
     print_table()
 
-filter_by_not_paid()
+def delete (name):
+    cursor.execute('DELETE FROM stud WHERE name=%s;', (name,))
+    conn.commit
+    print_table()
+
+delete("John")
+
