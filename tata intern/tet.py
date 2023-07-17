@@ -48,11 +48,11 @@ def update_by_rollno(rollno):
     cursor.execute("update stud SET gpa=new_gpa where rollno=rollno")
 
 def filter_above_gpa(v_gpa):
-    cursor.execute("select * from stud where gpa>v_gpa")
+    cursor.execute("select * from stud where gpa>%s",v_gpa)
     print_table()
 
 def filter_below_gpa(v_gpa):
-    cursor.execute("select * from stud where gpa<=v_gpa")
+    cursor.execute("select * from stud where gpa<=%s",v_gpa)
     print_table()
 
 def filter_by_paid():
@@ -69,4 +69,5 @@ def delete (name):
     print_table()
 
 delete("John")
+filter_below_gpa("4")
 

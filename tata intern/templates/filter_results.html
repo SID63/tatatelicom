@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Filtered Results</title>
+</head>
+<body>
+    <h1>Filtered Results</h1>
+    <a href="/">back</a>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Class</th>
+            <th>Section</th>
+            <th>Class Teacher</th>
+            <th>GPA</th>
+            <th>Fee Status</th>
+        </tr>
+        {% for student in filtered_stu %}
+        <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.Rollno }}</td>
+            <td>{{ student.class }}</td>
+            <td>{{ student.section }}</td>
+            <td>{{ student.classteacher }}</td>
+            <td>{{ student.GPA }}</td>
+            <td>{{ student.Fee_status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

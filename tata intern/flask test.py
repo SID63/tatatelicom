@@ -11,7 +11,7 @@ api = Api(app)
 
 
 cursor = db.cursor()
-cursor.execute('INSERT INTO stud (name, rollno, CLASS, SECTION, CLASS_TEACH, GPA, FEE) VALUES ("SANDY", "cb.en.u4cce21062", "CCE", "A", "Karthik", 4, "NOTPAID"),("JOHN","cb.en.u4cce21063","CSE","B","Ravi",3,"PAID"),("MARY","cb.en.u4cce21064","ECE","C","Suresh",2,"NOTPAID"),("ALEX","cb.en.u4cce21065","IT","D","Shankar",1,"PAID")')
+cursor.execute('INSERT INTO stud (name, rollno, CLASS, SECTION, CLASS_TEACH, GPA, FEE) VALUES ("MARY","cb.en.u4cce21064","ECE","C","Suresh",2,"NOTPAID"),("ALEX","cb.en.u4cce21065","IT","D","Shankar",1,"PAID")')
 
 def print_table():
     row=cursor.fetchall()

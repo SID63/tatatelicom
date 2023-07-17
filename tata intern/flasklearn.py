@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,redirect
 import pymysql
 
 studentdb = Flask(__name__)
@@ -52,33 +52,59 @@ def deletebyname():
 
     return render_template("deletebyname.html")
 
-@studentdb.route("/sort",methods =["GET", "POST"])
+@studentdb.route("/sort", methods=["GET", "POST"])
 def sort():
     if request.method == "POST":
-       sort = request.form.get("sort")
-       
-       if sort =="accending":
-           cursor.execute('ALTER TABLE stud ORDER BY name ASC;')
-           
-
-       elif sort =="decending":
-           cursor.execute('ALTER TABLE stud ORDER BY name DESC;')
-       conn.commit()
-
+        sort_order = request.form.get("sort")
+        if sort_order == "ascending":
+            cursor.execute("SELECT * FROM stud ORDER BY name ASC;")
+        elif sort_order == "descending":
+            cursor.execute("SELECT * FROM stud ORDER BY name DESC;")
+        sorted_stu = []
+        for row in cursor:
+            sorted_stu.append({
+                "name": row[0],
+                "Rollno": row[1],
+                "class": row[2],
+                "section": row[3],
+                "classteacher": row[4],
+                "GPA": row[5],
+                "Fee_status": row[6]
+            })
+        return render_template("sort_results.html", sorted_stu=sorted_stu)
     return render_template("sort.html")
 
-@studentdb.route("/filter",methods =["GET", "POST"])
+@studentdb.route("/filter", methods=["GET", "POST"])
 def filter():
-    stu=[]
     if request.method == "POST":
-       name = request.form.get("name")
-       def filt ():
-               cursor.execute('SELECT * FROM stud WHERE CLASS_TEACH LIKE %s',name)
-               stu = cursor.fetchall()
-               conn.commit()
-               return render_template("filterclassteacher.html", stu=stu)
-       
+        teacher_name = request.form.get("teacher_name")
+        cursor.execute("SELECT * FROM stud WHERE CLASS_TEACH = %s", teacher_name)
+        filtered_stu = []
+        for row in cursor:
+            filtered_stu.append({
+                "name": row[0],
+                "Rollno": row[1],
+                "class": row[2],
+                "section": row[3],
+                "classteacher": row[4],
+                "GPA": row[5],
+                "Fee_status": row[6]
+            })
+        return render_template("filter_results.html", filtered_stu=filtered_stu)
+    return render_template("filterclassteacher.html")
 
+@studentdb.route('/update', methods=['GET','POST'])
+def update_student():
+    if request.method=="POST":
+        rollno=request.form['rollno']
+        gpa = request.form['gpa']
+        if gpa:
+            sql = "UPDATE stud SET gpa=%s where rollno=%s"
+            cursor.execute(sql,(gpa,rollno))
+            conn.commit()
+            return redirect('/')   
+    else:
+        return render_template('update.html')
 
 
 

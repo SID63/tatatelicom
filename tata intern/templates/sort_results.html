@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sorted Results</title>
+</head>
+<body>
+    <h1>Sorted Results</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Class</th>
+            <th>Section</th>
+            <th>Class Teacher</th>
+            <th>GPA</th>
+            <th>Fee Status</th>
+        </tr>
+        {% for student in sorted_stu %}
+        <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.Rollno }}</td>
+            <td>{{ student.class }}</td>
+            <td>{{ student.section }}</td>
+            <td>{{ student.classteacher }}</td>
+            <td>{{ student.GPA }}</td>
+            <td>{{ student.Fee_status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">back</a>
+</body>
+</html>

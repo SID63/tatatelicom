@@ -1,21 +1,20 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>sort by name</title>
+    <title>Sort Students</title>
+    <a href="/">back</a>
 </head>
 <body>
-	<h3>sort</h3>
-	<a href="/">back</a>
-	<form action="/sort" method="POST"> 
-		
-        <label for="sort">Choose a sorting w.r.t name:</label>
-
-        <select name="sort">
-            <option value="accending">accending</option>
-            <option value="decending">decending</option>
+    <h1>Sort Students</h1>
+    <form method="POST" action="/sort">
+        <label for="sort">Sort Order:</label>
+        <select name="sort" id="sort">
+            <option value="ascending">Ascending</option>
+            <option value="descending">Descending</option>
         </select>
-        <button type="submit">select</button>
-		
-	</form>
+        <br><br>
+        <input type="submit" value="Sort">
+    </form>
 </body>
 </html>
