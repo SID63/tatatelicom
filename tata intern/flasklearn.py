@@ -90,21 +90,41 @@ def sort():
 @studentdb.route("/filter", methods=["GET", "POST"])
 def filter():
     if request.method == "POST":
-        teacher_name = request.form.get("teacher_name")
-        cursor.execute("SELECT * FROM stud WHERE CLASS_TEACH = %s", teacher_name)
-        filtered_stu = []
-        for row in cursor:
-            filtered_stu.append({
-                "name": row[0],
-                "Rollno": row[1],
-                "class": row[2],
-                "section": row[3],
-                "classteacher": row[4],
-                "GPA": row[5],
-                "Fee_status": row[6]
-            })
-        return render_template("filter_results.html", filtered_stu=filtered_stu)
-    return render_template("filterclassteacher.html")
+        criteria = request.form.get("criteria")
+        value = request.form.get("value")
+
+        try:
+            if criteria == "class_section":
+                class_name, section = value.split('_')
+                cursor.execute("SELECT * FROM stud WHERE CLASS=%s AND SECTION=%s", (class_name, section))
+            elif criteria == "above_gpa":
+                cursor.execute("SELECT * FROM stud WHERE GPA >= %s", value)
+            elif criteria == "below_gpa":
+                cursor.execute("SELECT * FROM stud WHERE GPA < %s", value)
+            elif criteria == "fee_paid":
+                cursor.execute("SELECT * FROM stud WHERE Fee_status = 'Paid'")
+            elif criteria == "fee_not_paid":
+                cursor.execute("SELECT * FROM stud WHERE Fee_status = 'Not Paid'")
+
+            filtered_stu = []
+            for row in cursor:
+                filtered_stu.append({
+                    "name": row[0],
+                    "Rollno": row[1],
+                    "class": row[2],
+                    "section": row[3],
+                    "classteacher": row[4],
+                    "GPA": row[5],
+                    "Fee_status": row[6]
+                })
+
+            return render_template("filter_results.html", filtered_stu=filtered_stu)
+
+        except Exception as e:
+            error_message = f"An error occurred: {str(e)}"
+            return render_template("filter_error.html", error_message=error_message)
+
+    return render_template("filter.html")
 
 @studentdb.route('/update', methods=['GET','POST'])
 def update_student():

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Filter Students</title>
+</head>
+<body>
+    <h1>Filter Students</h1>
+    <form action="/filter" method="POST">
+        <label for="criteria">Filter by:</label>
+        <select name="criteria" id="criteria">
+            {% value="class_section">Class and Section%}
+            <option value="above_gpa">Above or Equal to GPA</option>
+            <option value="below_gpa">Below GPA</option>
+            <option value="fee_paid">Fee Paid</option>
+            <option value="fee_not_paid">Fee Not Paid</option>
+        </select>
+        <br>
+        {% if criteria == 'class_section' %}
+        <label for="class_name">Class:</label>
+        <input type="text" name="value1" id="class_name" required>
+        <br>
+        <label for="section">Section:</label>
+        <input type="text" name="value2" id="section" required>
+        <br>
+        {% else %}
+        <label for="value">Value:</label>
+        <input type="text" name="value" id="value" required>
+        <br>
+        {% endif %}
+        <input type="submit" value="Filter">
+    </form>
+</body>
+</html>
