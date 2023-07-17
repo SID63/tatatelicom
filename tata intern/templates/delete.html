@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Record</title>
+</head>
+<body>
+    <h1>Delete Record</h1>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+    <form action="/delete" method="POST">
+        <label for="criteria">Delete by:</label>
+        <select name="criteria" id="criteria">
+            <option value="name">Name</option>
+            <option value="rollno">Roll Number</option>
+        </select>
+        <br>
+        <label for="value">Value:</label>
+        <input type="text" name="value" id="value" required>
+        <br>
+        <input type="submit" value="Delete">
+    </form>
+</body>
+</html>

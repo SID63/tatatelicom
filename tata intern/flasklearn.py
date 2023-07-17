@@ -43,14 +43,27 @@ def add():
        conn.commit()
     return render_template("add.html")
 
-@studentdb.route("/deletebyname",methods =["GET", "POST"])
-def deletebyname():
-    if request.method == "POST":
-       name = request.form.get("name")
-       conn.commit()
-       cursor.execute('DELETE FROM stud WHERE name=%s;',name)
+@studentdb.route("/delete", methods=["GET", "POST"])
+def delete():
+    message = None
 
-    return render_template("deletebyname.html")
+    if request.method == "POST":
+        criteria = request.form.get("criteria")
+        value = request.form.get("value")
+
+        if criteria == "name":
+            cursor.execute('DELETE FROM stud WHERE name=%s;', (value,))
+        elif criteria == "rollno":
+            cursor.execute('DELETE FROM stud WHERE rollno=%s;', (value,))
+
+        conn.commit()
+
+        if cursor.rowcount == 0:
+            message = f"No records found with {criteria} '{value}'."
+        else:
+            message = f"Deleted records with {criteria} '{value}'."
+
+    return render_template("delete.html", message=message)
 
 @studentdb.route("/sort", methods=["GET", "POST"])
 def sort():
