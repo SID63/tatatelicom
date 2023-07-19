@@ -1,23 +1,18 @@
-from flask import Flask, render_template,request,redirect
+from flask import Flask, render_template, request, redirect
 import pymysql
 
 studentdb = Flask(__name__)
 
-
-
 def connection():
     s = 'localhost' 
     d = 'studentdb' 
-    u = 'root' #Your login user
-    p = 'Sidarth@63' #Your login password
+    u = 'root' # Your login user
+    p = 'Sidarth@63' # Your login password
     conn = pymysql.connect(host=s, user=u, password=p, database=d)
     return conn
 
-
-
 conn = connection()
 cursor = conn.cursor()
-
 
 @studentdb.route("/")
 def main():
@@ -28,19 +23,19 @@ def main():
     print(stu)
     return render_template("login.html", stu=stu)
 
-@studentdb.route("/add",methods =["GET", "POST"])
+@studentdb.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "POST":
-       name = request.form.get("name")
-       rollno = request.form.get("rollno")
-       clas = request.form.get("class")
-       section = request.form.get("section")
-       class_teacher = request.form.get("class_teacher")
-       GPA = request.form.get("GPA")
-       Fee_status = request.form.get("Fee_status")
-      
-       cursor.execute('INSERT INTO stud (name, rollno, CLASS, SECTION, CLASS_TEACH, GPA, FEE) VALUES (%s, %s, %s, %s, %s, %s, %s)',(name,rollno,clas,section,class_teacher,GPA,Fee_status))
-       conn.commit()
+        name = request.form.get("name")
+        rollno = request.form.get("rollno")
+        clas = request.form.get("class")
+        section = request.form.get("section")
+        class_teacher = request.form.get("class_teacher")
+        GPA = request.form.get("GPA")
+        Fee_status = request.form.get("Fee_status")
+
+        cursor.execute('INSERT INTO stud (name, rollno, CLASS, SECTION, CLASS_TEACH, GPA, FEE) VALUES (%s, %s, %s, %s, %s, %s, %s)', (name, rollno, clas, section, class_teacher, GPA, Fee_status))
+        conn.commit()
     return render_template("add.html")
 
 @studentdb.route("/delete", methods=["GET", "POST"])
@@ -130,17 +125,26 @@ def filter():
 def update_student():
     if request.method=="POST":
         rollno=request.form['rollno']
-        gpa = request.form['gpa']
-        if gpa:
-            sql = "UPDATE stud SET gpa=%s where rollno=%s"
-            cursor.execute(sql,(gpa,rollno))
+        criteria = request.form.get("criteria")
+        value = request.form.get("value")
+        
+        try:
+            if criteria == "gpa":
+                 
+                cursor.execute("UPDATE stud SET GPA=%s where rollno=%s", (value, rollno))
+            elif criteria == "Fee_status":
+                cursor.execute("UPDATE stud SET FEE=%s where rollno=%s", (value,rollno))
             conn.commit()
-            return redirect('/')   
+            
+            return redirect('/')
+        
+        except Exception as e:
+            error_message = f"An error occurred: {str(e)}"
+            return render_template("update_error.html", error_message=error_message)
+        
     else:
         return render_template('update.html')
 
 
-
-
-if(__name__ == "__main__"):
+if __name__ == "__main__":
     studentdb.run()
