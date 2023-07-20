@@ -1,0 +1,33 @@
+<div class="neumorphic-card">
+  <h2 mat-dialog-title>Update</h2>
+  <div mat-dialog-content>
+    <mat-form-field floatLabel="always">
+      <input matInput placeholder="Roll Number to be Updated" [(ngModel)]="rollNumberUpdated" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Update By</mat-label>
+      <mat-select [(value)]="updateBy" required>
+        <mat-option *ngFor="let opt of options" [value]="opt">{{opt}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Use ngIf to conditionally show GPA input field or Fee Status checkbox -->
+    <ng-container *ngIf="updateBy === 'GPA'; else feeStatusSection">
+      <mat-form-field>
+        <mat-label>GPA</mat-label>
+        <input matInput type="number" min="0" max="10" step="0.1" [(ngModel)]="gpaUpdated" required>
+      </mat-form-field>
+    </ng-container>
+
+    <ng-template #feeStatusSection>
+      <div>
+        <mat-checkbox [(ngModel)]="feeStatusUpdated">Fee Paid</mat-checkbox>
+      </div>
+    </ng-template>
+
+  </div>
+
+  <div class="save-button">
+    <button mat-raised-button color="primary" (click)="saveStudent()">Save</button>
+  </div>
+</div>
