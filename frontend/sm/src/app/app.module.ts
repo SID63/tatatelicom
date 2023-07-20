@@ -14,6 +14,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatMenuModule} from '@angular/material/menu';
 import { UpdateStudentComponent } from './update-student/update-student.component';
+import { ReactiveFormsModule } from '@angular/forms'; 
+
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { UpdateStudentComponent } from './update-student/update-student.componen
     MatSelectModule,
     MatCheckboxModule,
     MatSliderModule,
-    MatMenuModule // Add this line
+    MatMenuModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
