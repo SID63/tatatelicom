@@ -40,11 +40,5 @@ export class AddStudentDialogComponent {
     // Close the dialog after saving the data
     this.dialogRef.close();
   }
-  formatLabel(value: number): string {
-    if (value >= 10) {
-      return Math.round(value / 10) + 'k';
-    }
 
-    return `${value}`;
-  }
 }

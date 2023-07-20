@@ -43,3 +43,41 @@
 .student-table tbody tr:hover {
   background-color: #f5f5f5;
 }
+/* Style for the search bar container */
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* Adjust the margin as needed */
+  align-items: center;
+}
+
+/* Style for the search bar */
+.search-bar {
+  margin-left: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border: 1px solid #e0e0e0; /* Replace with desired border color */
+  border-radius: 8px;
+  background-color: #f0f0f0; /* Replace with desired background color */
+  box-shadow: 4px 4px 8px #d0d0d0, -4px -4px 8px #ffffff; /* Neumorphic shadow effect */
+  outline: none;
+  width: 300px; /* Adjust the width as needed */
+  transition: box-shadow 0.3s, background-color 0.3s; /* Adding transitions for smooth effects */
+}
+
+/* Hover effect for the search bar */
+.search-bar:hover {
+  box-shadow: 6px 6px 12px #d0d0d0, -6px -6px 12px #ffffff; /* Slightly increase the shadow on hover */
+  cursor: pointer;
+}
+
+/* Inset effect for the search bar when pressed */
+.search-bar:active {
+  box-shadow: inset 4px 4px 8px #c0c0c0, inset -4px -4px 8px #ffffff; /* Inset shadow effect */
+  background-color: #590099; /* Change background color on press */
+  color: #ffffff; /* Change text color on press to make it visible */
+}
+
