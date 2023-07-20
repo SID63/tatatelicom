@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Import necessary form modules
+import { StudentService } from '../student.service';
+import { Student } from '../student.model';
 
 @Component({
   selector: 'app-update-student',
@@ -7,32 +10,45 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./update-student.component.css']
 })
 export class UpdateStudentComponent {
-  // Define form controls for input fields
-  rollNumberUpdated: string = '';
-  updateBy: string = '';
-  gpaUpdated: number = 0;
-  feeStatusUpdated: boolean = false;
+  // Create a form group
+  updateForm: FormGroup;
 
   // Define arrays for dropdown options
-  options: string[] = ['GPA','Fee Status'];
+  options: string[] = ['GPA', 'Fee Status'];
   sections: string[] = ['A', 'B', 'C', 'D'];
 
-  // Inject MatDialogRef to close the dialog
-  constructor(public dialogRef: MatDialogRef<UpdateStudentComponent>) {}
-
-  // Function to save the new student data and close the dialog
-  saveStudent(): void {
-    // Here, you can save the student data to your backend using HTTP requests.
-    // Replace this with your actual data saving logic to the backend.
-    console.log('Saving student data:', {
-      rollNumberUpdated: this.rollNumberUpdated,
-      updateBy: this.updateBy,
-      gpaUpdated: this.gpaUpdated,
-      feeStatusUpdated: this.feeStatusUpdated
+  // Inject MatDialogRef and FormBuilder to handle form and dialog
+  constructor(
+    public dialogRef: MatDialogRef<UpdateStudentComponent>,
+    private fb: FormBuilder,
+    private studentService: StudentService
+  ) {
+    // Initialize the form group and form controls
+    this.updateForm = this.fb.group({
+      rollNumberUpdated: ['', Validators.required],
+      updateBy: ['', Validators.required],
+      gpaUpdated: [0],
+      feeStatusUpdated: [false]
     });
-
-    // Close the dialog after saving the data
-    this.dialogRef.close();
   }
 
+  // Function to save the updated student data and close the dialog
+  saveStudent(): void {
+    if (this.updateForm.valid) {
+      const updatedStudent: Student = this.updateForm.value;
+
+      // Call the updateStudent function of the StudentService to send data to the backend
+      this.studentService.updateStudent(updatedStudent).subscribe(
+        (response: any) => {
+          console.log('Student updated successfully:', response);
+          this.dialogRef.close();
+        },
+        (error: any) => {
+          console.error('Error updating student:', error);
+        }
+      );
+    } else {
+      // Form is invalid, show some error message or validation indication.
+    }
+  }
 }
