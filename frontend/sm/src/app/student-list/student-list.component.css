@@ -54,7 +54,7 @@
 
 /* Style for the search bar */
 .search-bar {
-  margin-left: 1000px;
+  margin-left: 10px;
   display: flex;
   justify-content: center;
   align-items: center;

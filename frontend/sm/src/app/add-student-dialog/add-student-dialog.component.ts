@@ -38,6 +38,7 @@ export class AddStudentDialogComponent {
   // Function to save the new student data and close the dialog
   saveStudent(): void {
     if (this.studentForm.valid) {
+      console.log('Added student data:', this.studentForm.value);
       const newStudent: Student = this.studentForm.value;
 
       // Call the addStudent function of the StudentService to send data to the backend

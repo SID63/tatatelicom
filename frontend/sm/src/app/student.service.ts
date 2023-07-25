@@ -7,19 +7,19 @@ import { Student } from './student.model';
   providedIn: 'root'
 })
 export class StudentService {
-  private baseUrl = 'http://your-backend-api-url'; // Replace this with your actual backend API URL
+  private baseUrl = 'http://your-backend-api-url'; 
 
   constructor(private http: HttpClient) {}
 
   // Function to add a new student
   addStudent(student: Student): Observable<any> {
-    const url = `${this.baseUrl}/add-student`; // Replace 'add-student' with your backend API endpoint to add a student
+    const url = `${this.baseUrl}/add-student`; 
     return this.http.post(url, student);
   }
 
   // Function to update an existing student
   updateStudent(student: Student): Observable<any> {
-    const url = `${this.baseUrl}/update-student`; // Replace 'update-student' with your backend API endpoint to update a student
+    const url = `${this.baseUrl}/update-student`; 
     return this.http.put(url, student);
   }
 }

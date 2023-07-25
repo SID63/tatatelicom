@@ -34,7 +34,9 @@ export class UpdateStudentComponent {
 
   // Function to save the updated student data and close the dialog
   saveStudent(): void {
+    
     if (this.updateForm.valid) {
+      console.log('Saving updated student data:', this.updateForm.value);
       const updatedStudent: Student = this.updateForm.value;
 
       // Call the updateStudent function of the StudentService to send data to the backend
@@ -50,5 +52,7 @@ export class UpdateStudentComponent {
     } else {
       // Form is invalid, show some error message or validation indication.
     }
+    
   }
 }
+
