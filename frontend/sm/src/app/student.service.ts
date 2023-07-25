@@ -7,19 +7,17 @@ import { Student } from './student.model';
   providedIn: 'root'
 })
 export class StudentService {
-  private baseUrl = 'http://your-backend-api-url'; 
+  private baseUrl = 'http://localhost:5000'; // Update the base URL to your backend's URL
 
   constructor(private http: HttpClient) {}
 
-  // Function to add a new student
   addStudent(student: Student): Observable<any> {
-    const url = `${this.baseUrl}/add-student`; 
+    const url = `${this.baseUrl}/add-student`;
     return this.http.post(url, student);
   }
 
-  // Function to update an existing student
-  updateStudent(student: Student): Observable<any> {
-    const url = `${this.baseUrl}/update-student`; 
-    return this.http.put(url, student);
+  updateStudent(updatedStudent: Student): Observable<any> {
+    const url = `${this.baseUrl}/update-student`;
+    return this.http.post(url, updatedStudent);
   }
 }

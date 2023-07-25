@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, jsonify
 import pymysql
+from flask_cors import CORS
 
 studentdb = Flask(__name__)
+CORS(studentdb)
 
 def connection():
     s = 'localhost' 
@@ -20,131 +22,65 @@ def main():
     stu = []
     for row in cursor:
         stu.append({"name": row[0], "Rollno": row[1], "class": row[2], "section": row[3], "classteacher": row[4], "GPA": row[5], "Fee_status": row[6]})
-    print(stu)
     return render_template("login.html", stu=stu)
 
-@studentdb.route("/add", methods=["GET", "POST"])
-def add():
-    if request.method == "POST":
-        name = request.form.get("name")
-        rollno = request.form.get("rollno")
-        clas = request.form.get("class")
-        section = request.form.get("section")
-        class_teacher = request.form.get("class_teacher")
-        GPA = request.form.get("GPA")
-        Fee_status = request.form.get("Fee_status")
+@studentdb.route("/add-student", methods=["POST"])
+def add_student():
+    try:
+        data = request.get_json()
+        name = data.get("name")
+        rollno = data.get("rollNumber")
+        clas = data.get("selectedClass")
+        section = data.get("selectedSection")
+        class_teacher = data.get("classTeacher")
+        GPA = data.get("gpa")
+        Fee_status = data.get("feeStatus")
 
         cursor.execute('INSERT INTO stud (name, rollno, CLASS, SECTION, CLASS_TEACH, GPA, FEE) VALUES (%s, %s, %s, %s, %s, %s, %s)', (name, rollno, clas, section, class_teacher, GPA, Fee_status))
         conn.commit()
-    return render_template("add.html")
 
-@studentdb.route("/delete", methods=["GET", "POST"])
-def delete():
-    message = None
+        return jsonify({"message": "Student added successfully!"}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"message": "Error occurred while adding student.", "error": str(e)}), 500
 
-    if request.method == "POST":
-        criteria = request.form.get("criteria")
-        value = request.form.get("value")
+@studentdb.route("/update-student", methods=["POST"])
+def update_student():
+    try:
+        data = request.get_json()
+        rollno = data.get("rollNumberUpdated")
+        criteria = data.get("updateBy")
+        value = data.get("gpaUpdated" if criteria == "GPA" else "feeStatusUpdated")
 
-        if criteria == "name":
-            cursor.execute('DELETE FROM stud WHERE name=%s;', (value,))
-        elif criteria == "rollno":
-            cursor.execute('DELETE FROM stud WHERE rollno=%s;', (value,))
-
+        if criteria == "GPA":
+            cursor.execute("UPDATE stud SET GPA=%s WHERE rollno=%s", (value, rollno))
+        elif criteria == "Fee Status":
+            cursor.execute("UPDATE stud SET FEE=%s WHERE rollno=%s", (value, rollno))
         conn.commit()
 
-        if cursor.rowcount == 0:
-            message = f"No records found with {criteria} '{value}'."
-        else:
-            message = f"Deleted records with {criteria} '{value}'."
+        return jsonify({"message": "Student updated successfully!"}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"message": "Error occurred while updating student.", "error": str(e)}), 500
 
-    return render_template("delete.html", message=message)
-
-@studentdb.route("/sort", methods=["GET", "POST"])
-def sort():
-    if request.method == "POST":
-        sort_order = request.form.get("sort")
-        if sort_order == "ascending":
-            cursor.execute("SELECT * FROM stud ORDER BY name ASC;")
-        elif sort_order == "descending":
-            cursor.execute("SELECT * FROM stud ORDER BY name DESC;")
-        sorted_stu = []
+@studentdb.route("/view-students")
+def view_students():
+    try:
+        cursor.execute("SELECT * FROM stud")
+        stu = []
         for row in cursor:
-            sorted_stu.append({
+            stu.append({
                 "name": row[0],
-                "Rollno": row[1],
-                "class": row[2],
-                "section": row[3],
-                "classteacher": row[4],
-                "GPA": row[5],
-                "Fee_status": row[6]
+                "rollNumber": row[1],
+                "selectedClass": row[2],
+                "selectedSection": row[3],
+                "classTeacher": row[4],
+                "gpa": row[5],
+                "feeStatus": row[6]
             })
-        return render_template("sort_results.html", sorted_stu=sorted_stu)
-    return render_template("sort.html")
-
-@studentdb.route("/filter", methods=["GET", "POST"])
-def filter():
-    if request.method == "POST":
-        criteria = request.form.get("criteria")
-        value = request.form.get("value")
-
-        try:
-            if criteria == "class_section":
-                class_name, section = value.split('_')
-                cursor.execute("SELECT * FROM stud WHERE CLASS=%s AND SECTION=%s", (class_name, section))
-            elif criteria == "above_gpa":
-                cursor.execute("SELECT * FROM stud WHERE GPA >= %s", value)
-            elif criteria == "below_gpa":
-                cursor.execute("SELECT * FROM stud WHERE GPA < %s", value)
-            elif criteria == "fee_paid":
-                cursor.execute("SELECT * FROM stud WHERE Fee_status = 'Paid'")
-            elif criteria == "fee_not_paid":
-                cursor.execute("SELECT * FROM stud WHERE Fee_status = 'Not Paid'")
-
-            filtered_stu = []
-            for row in cursor:
-                filtered_stu.append({
-                    "name": row[0],
-                    "Rollno": row[1],
-                    "class": row[2],
-                    "section": row[3],
-                    "classteacher": row[4],
-                    "GPA": row[5],
-                    "Fee_status": row[6]
-                })
-
-            return render_template("filter_results.html", filtered_stu=filtered_stu)
-
-        except Exception as e:
-            error_message = f"An error occurred: {str(e)}"
-            return render_template("filter_error.html", error_message=error_message)
-
-    return render_template("filter.html")
-
-@studentdb.route('/update', methods=['GET','POST'])
-def update_student():
-    if request.method=="POST":
-        rollno=request.form['rollno']
-        criteria = request.form.get("criteria")
-        value = request.form.get("value")
-        
-        try:
-            if criteria == "gpa":
-                 
-                cursor.execute("UPDATE stud SET GPA=%s where rollno=%s", (value, rollno))
-            elif criteria == "Fee_status":
-                cursor.execute("UPDATE stud SET FEE=%s where rollno=%s", (value,rollno))
-            conn.commit()
-            
-            return redirect('/')
-        
-        except Exception as e:
-            error_message = f"An error occurred: {str(e)}"
-            return render_template("update_error.html", error_message=error_message)
-        
-    else:
-        return render_template('update.html')
-
+        return jsonify(stu), 200
+    except Exception as e:
+        return jsonify({"message": "Error occurred while fetching students.", "error": str(e)}), 500
 
 if __name__ == "__main__":
     studentdb.run()

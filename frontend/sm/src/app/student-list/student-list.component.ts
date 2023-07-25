@@ -7,29 +7,23 @@ import { Student } from '../student.model';
   templateUrl: './student-list.component.html',
   styleUrls: ['./student-list.component.css']
 })
-
-
 export class StudentListComponent {
-  
   showTable: boolean = false;
-  searchQuery = '';
-  students: Student[] = []; // Update the type to Student[]
+  students: Student[] = [];
+  baseUrl = 'http://localhost:5000'; // Update the base URL to your backend's URL
+
   constructor(private http: HttpClient) {}
 
   onViewStudentsClick(): void {
-    this.http.get<any[]>('http://your-backend-api-url/students').subscribe(
-      (response: any[]) => {
-        this.students = response; // Store the fetched student data in the 'students' array
-        this.showTable = true; // Show the table after data is fetched
+    this.http.get<Student[]>(`${this.baseUrl}/view-students`).subscribe(
+      (response: Student[]) => {
+        this.students = response;
+        this.showTable = true;
       },
       (error: any) => {
         console.error('Error fetching students:', error);
         // You can handle the error here, e.g., display an error message to the user
       }
     );
-    this.showTable = true;
   }
-
-  // You can also define the "students" array here to hold the student data when fetched from the backend.
-  // students: any[] = [];
 }
