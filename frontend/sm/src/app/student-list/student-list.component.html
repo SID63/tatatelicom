@@ -1,25 +1,26 @@
-
 <div class="table-container" *ngIf="showTable">
-<div>
-    <table class="student-table" style="margin-top: 40px;">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Roll Number</th>
-          <th>Class</th>
-          <th>Section</th>
-          <th>Class Teacher</th>
-          <th>GPA</th>
-          <th>Fee Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Add Angular directives or data binding here to populate the table -->
-        <!-- For example: *ngFor="let student of students" -->
-        <!-- Use Angular data to display the student information dynamically -->
-      </tbody>
-    </table>
-  </div>
-  
+  <table class="student-table" style="margin-top: 40px;">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Roll Number</th>
+        <th>Class</th>
+        <th>Section</th>
+        <th>Class Teacher</th>
+        <th>GPA</th>
+        <th>Fee Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <td>{{ student.name }}</td>
+        <td>{{ student.rollNumber }}</td>
+        <td>{{ student.selectedClass }}</td>
+        <td>{{ student.selectedSection }}</td>
+        <td>{{ student.classTeacher }}</td>
+        <td>{{ student.gpa }}</td>
+        <td>{{ student.feeStatus }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-  
