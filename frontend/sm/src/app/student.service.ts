@@ -20,4 +20,9 @@ export class StudentService {
     const url = `${this.baseUrl}/update-student`;
     return this.http.post(url, updatedStudent);
   }
+
+  deleteStudent(rollNumber: string): Observable<any> {
+    const url = `${this.baseUrl}/delete-student/${rollNumber}`;
+    return this.http.delete(url);
+  }
 }

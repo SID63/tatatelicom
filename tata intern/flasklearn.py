@@ -63,6 +63,17 @@ def update_student():
         conn.rollback()
         return jsonify({"message": "Error occurred while updating student.", "error": str(e)}), 500
 
+@studentdb.route("/delete-student/<string:roll_number>", methods=["DELETE"])
+def delete_student(roll_number):
+    try:
+        cursor.execute("DELETE FROM stud WHERE rollno=%s", (roll_number,))
+        conn.commit()
+
+        return jsonify({"message": "Student deleted successfully!"}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"message": "Error occurred while deleting student.", "error": str(e)}), 500
+
 @studentdb.route("/view-students")
 def view_students():
     try:

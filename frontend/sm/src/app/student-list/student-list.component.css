@@ -14,7 +14,8 @@
   text-align: center;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow:  23px 23px 46px #2c0348,
+             -23px -23px 46px #8a0be6;
 }
 
 /* Styling for the table header */
@@ -35,13 +36,18 @@
 }
 
 /* Styling for alternating rows */
-.student-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+.student-table tbody tr {
+  background-color: #ffffff; /* Change the default alternating row color to white */
 }
 
 /* Hover effect on table rows */
 .student-table tbody tr:hover {
-  background-color: #f5f5f5;
+  background-color: #791fb9; /* Change the hover background color to purple */
+  color: #ffffff; /* Change text color on hover to make it visible */
+  
+  box-shadow:  23px 23px 46px #a8a8a8,
+             -23px -23px 46px #ffffff;
+             transition: box-shadow 0.3s ,background-color 0.3s;
 }
 /* Style for the search bar container */
 .search-bar-container {
@@ -79,5 +85,49 @@
   box-shadow: inset 4px 4px 8px #c0c0c0, inset -4px -4px 8px #ffffff; /* Inset shadow effect */
   background-color: #590099; /* Change background color on press */
   color: #ffffff; /* Change text color on press to make it visible */
+}
+
+/* Style for the "No matching results" error message */
+/* Add these styles to the existing CSS */
+
+/* Styling for the delete button */
+.student-table td button {
+  color: #ff5e5e; /* White font color */
+  background-color: #ffffff; /* Red background color */
+  border-radius: 15%; /* Rounded shape */
+  width: 45px; /* Adjust width as needed */
+  height: 26px; /* Adjust height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none; /* Remove default button border */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Add a smooth transition effect */
+  font-size: 10px;
+  border: 2px solid #ff6060;
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+/* Hover effect on delete button */
+.student-table td button:hover {
+  background-color: #c80000; /* Darker red background on hover */
+  color: #f0f0f0;
+  box-shadow:  5px 5px 10px #3f006d,
+             -5px -5px 10px #7300c5;
+}
+
+/* Active (pressed) state of delete button */
+.student-table td button:active {
+  background-color: #a30000; /* Even darker red background when pressed */
+  color: #f0f0f0;
+  box-shadow: inset 23px 23px 46px #4e0000,
+            inset -23px -23px 46px #f80000;
+
+}
+
+/* Centering the content inside the button (e.g., icon) */
+.student-table td button .material-icons {
+  display: flex;
+  align-items: center;
 }
 

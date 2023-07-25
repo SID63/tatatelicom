@@ -1,9 +1,9 @@
 export class Student {
-    name: string | undefined;
-    rollNumber: string | undefined;
-    selectedClass: string | undefined;
-    selectedSection: string | undefined;
-    classTeacher: string | undefined;
+    name: string= '';
+    rollNumber: string = '';
+    selectedClass: string ='';
+    selectedSection: string ='';
+    classTeacher: string = '';
     gpa: number | undefined;
     feeStatus: boolean | undefined;
   }

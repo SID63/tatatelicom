@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddStudentDialogComponent } from './add-student-dialog/add-student-dialog.component';
 import { UpdateStudentComponent } from './update-student/update-student.component';
 import { StudentService } from './student.service';
 import { Student } from './student.model';
+import { StudentListComponent } from './student-list/student-list.component';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,11 @@ import { Student } from './student.model';
 })
 export class AppComponent {
   title = 'Student Management System';
+  SearchFilter: string = '';
+
 
   constructor(private dialog: MatDialog, private studentService: StudentService) {}
-
+  
   openAddStudentDialog(): void {
     const dialogRef = this.dialog.open(AddStudentDialogComponent, {
       width: '400px'

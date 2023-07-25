@@ -15,27 +15,24 @@
 <div>
   <nav class="navigation">
     <ul>
-        <li>
-          <input type="text" placeholder="  Search     🔍" class="search-bar">
-        </li>
       <li>
-      <button mat-button color="primary" routerLink="/view-students" class="view-students-btn" (click)="studentList.onViewStudentsClick()">View students</button>
-<app-student-list #studentList></app-student-list>
-
+        <input type="text" placeholder="Search 🔍" class="search-bar" [(ngModel)]="SearchFilter">
       </li>
-
-      <li><button mat-button color="primary" (click)="openAddStudentDialog()">Add New Students</button>
-        <li><button mat-button color="primary" (click)="openUpdateOptionsDialog()">Update Students</button>
+      <li>
+        <button mat-button color="primary" routerLink="/view-students" class="view-students-btn" (click)="studentList.onViewStudentsClick()">View students</button>
+        <app-student-list [SearchFilter]="SearchFilter" #studentList></app-student-list>
+      </li>
+      <li>
+        <button mat-button color="primary" (click)="openAddStudentDialog()">Add New Students</button>
+      </li>
+      <li>
+        <button mat-button color="primary" (click)="openUpdateOptionsDialog()">Update Students</button>
       </li>
     </ul>
-    
   </nav>
 </div>
 
-
-
-
+<!-- ... (Other content) ... -->
 
 </body>
 </html>
-
